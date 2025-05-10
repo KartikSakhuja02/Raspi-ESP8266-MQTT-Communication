@@ -1,0 +1,53 @@
+{% extends "navbar.html" %}
+{% load static %}
+{% block title %}Profile{% endblock title %}
+
+{% block body %}
+<div class="min-vh-100 d-flex align-items-center justify-content-center bg-dark text-light py-5">
+  <div class="container" style="max-width: 600px;">
+    <div class="bg-secondary bg-opacity-50 p-4 rounded-4 shadow-lg">
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="text-info">User Profile</h2>
+        <button id="edit-btn" class="btn btn-outline-info">Edit</button>
+      </div>
+
+      <form method="POST" action="/update-profile" id="profile-form">
+        {% csrf_token %}
+        <div class="mb-3">
+          <label for="name" class="form-label">Name</label>
+          <input type="text" class="form-control bg-dark text-light border-0" id="name" name="name" value="{{ user_profile.name }}" readonly>
+        </div>
+        <div class="mb-3">
+          <label for="email" class="form-label">Email</label>
+          <input type="email" class="form-control bg-dark text-light border-0" id="email" name="email" value="{{ user_profile.email }}" readonly>
+        </div>
+        <div class="mb-3">
+          <label for="phone" class="form-label">Phone Number</label>
+          <input type="tel" class="form-control bg-dark text-light border-0" id="phone" name="phone" value="{{ user_profile.phone }}" readonly>
+        </div>
+        <div class="mb-3">
+          <label for="city" class="form-label">City</label>
+          <select class="form-select bg-dark text-light border-0" name="city" id="city" disabled>
+            {% for city in cities %}
+            <option value="{{ city }}" {% if city == user_profile.city %}selected{% endif %}>{{ city }}</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <button type="submit" class="btn btn-info text-dark fw-bold d-none" id="save-btn">Save Changes</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.getElementById("edit-btn").addEventListener("click", function () {
+    document.querySelectorAll("#profile-form input, #profile-form select").forEach(el => {
+      el.removeAttribute("readonly");
+      el.removeAttribute("disabled");
+    });
+    this.classList.add("d-none");
+    document.getElementById("save-btn").classList.remove("d-none");
+  });
+</script>
+{% endblock body %}

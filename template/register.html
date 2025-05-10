@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Register | Environment Monitoring</title>
+    <link rel="stylesheet" href="/static/bootstrap.css" />
+    <link rel="stylesheet" href="/static/universal.css" />
+  </head>
+  <body class="bg-black text-light">
+    <div class="min-vh-100 d-flex align-items-center justify-content-center py-5">
+      <div class="container" style="max-width: 720px;">
+        <div class="bg-opacity-75 bg-secondary rounded-4 shadow-lg p-4">
+          <h2 class="mb-4 text-center text-warning">Register</h2>
+          {% if messages %}
+            {% for message in messages %}
+              <div class="alert alert-{{ message.tags }} text-center" role="alert">
+                {{ message }}
+              </div>
+            {% endfor %}
+          {% endif %}
+          <form class="row g-3" method="POST" action="/register" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="col-12">
+              <label for="name" class="form-label text-warning">Name</label>
+              <input type="text" id="name" name="name" class="form-control bg-secondary text-light border-0" placeholder="Joe" required />
+            </div>
+            <div class="col-12">
+              <label for="email" class="form-label text-warning">E-Mail</label>
+              <input type="email" id="email" name="email" class="form-control bg-secondary text-light border-0" placeholder="abc@gmail.com" required />
+            </div>
+            <div class="col-12">
+              <label for="password" class="form-label text-warning">Password</label>
+              <input type="password" id="password" name="password" class="form-control bg-secondary text-light border-0" required />
+            </div>
+            <div class="col-md-6">
+              <label for="inputCity" class="form-label text-warning">City</label>
+              <select id="inputCity" name="city" class="form-select bg-secondary text-light border-0" required>
+                <option disabled value="">Choose a city</option>
+                <option value="pune">Pune</option>
+                <option value="mumbai">Mumbai</option>
+                <option value="delhi">Delhi</option>
+                <option value="bangalore">Bangalore</option>
+              </select>
+            </div>
+            <div class="col-md-6">
+              <label for="pnumber" class="form-label text-warning">Phone Number</label>
+              <input type="tel" id="pnumber" name="pnumber" class="form-control bg-secondary text-light border-0" required />
+            </div>
+            <div class="col-12 d-flex justify-content-between mt-3">
+              <a href="/" class="btn btn-warning px-4 fw-bold">Return to Login</a>
+              <button type="submit" class="btn btn-warning px-4 fw-bold">Sign Up</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

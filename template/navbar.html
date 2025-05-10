@@ -1,0 +1,55 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock title %} | Environment Monitoring</title>
+    <link rel="stylesheet" href="/static/bootstrap.css">
+    <link rel="stylesheet" href="/static/universal.css">
+    {% block head %} {% endblock head %}
+</head>
+<body>
+    <nav class="navbar navbar-dark bg-dark fixed-top">
+        <div class="container-fluid">
+            <a class="navbar-brand text-light" href="#">Environment Monitor</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="offcanvas offcanvas-end text-bg-dark" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+                <div class="offcanvas-header">
+                    <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Menu</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                </div>
+                <div class="offcanvas-body">
+                    <ul class="nav flex-column list-unstyled">
+                        <li class="nav-item"><a class="nav-link active text-light" aria-current="page" href="/">Home</a></li>
+                        <li class="nav-item"><a class="nav-link text-light" href="/about">About Us</a></li>
+                        <hr class="text-light">
+                        <li class="nav-item"><a class="nav-link text-light" href="/temperature">Temperature</a></li>
+                        <li class="nav-item"><a class="nav-link text-light" href="/humidity">Humidity</a></li>
+                        <li class="nav-item"><a class="nav-link text-light" href="/phsensor">PH Sensor</a></li>
+                        <li class="nav-item"><a class="nav-link text-light" href="/gassensor">Gas Sensor</a></li>
+                        <hr class="text-light">
+                        <li class="nav-item"><a class="nav-link text-light" href="/allsensor">All Sensor Data</a></li>
+                    </ul>
+                    <div class="position-absolute bottom-0 start-0 w-100 px-3 pb-3">
+                        <hr class="text-light">
+                        {% if request.user.is_authenticated %}
+                            <a href="/profile" class="btn btn-outline-light w-100">{{ request.user.username|upper }}</a>
+                        {% else %}
+                            <a href="/login" class="btn btn-outline-light w-100">Login</a>
+                        {% endif %}
+                        <br>
+                        {% if request.user.is_authenticated %}
+                            <a href="/logout" class="btn btn-outline-light w-100 mt-2">LOGOUT</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <script defer src="/static/navbar.js"></script>
+    {% block body %}{% endblock body %}
+</body>
+</html>

@@ -1,0 +1,155 @@
+{% extends "navbar.html" %}
+
+{% block title %}
+    pH Sensor Dashboard
+{% endblock title %}
+
+{% block body %}
+<div class="container-fluid py-4">
+    <div class="row">
+        <!-- Chart Column -->
+        <div class="col-md-6 mb-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">pH History</h5>
+                    <canvas id="phChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- pH Meter Column -->
+        <div class="col-md-6 mb-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">pH Meter</h5>
+
+                    <div class="text-center mb-4">
+                        <canvas id="pHMeter" width="400" height="200"></canvas>
+                        <div class="position-relative mt-3 border border-dark rounded overflow-hidden" style="height: 80px;">
+                            <div id="ph-scale" class="d-flex w-100 h-100">
+                                <!-- Segments inserted via JS -->
+                            </div>
+                            <div id="ph-pointer" class="position-absolute" style="bottom:0; width: 0; height: 0; border-left: 15px solid transparent; border-right: 15px solid transparent; border-bottom: 40px solid black; transform: translateX(-15px); z-index:10;"></div>
+                        </div>
+                        <div id="ph-labels" class="d-flex justify-content-between mt-2"></div>
+                    </div>
+
+                    <div class="text-center">
+                        <h2 id="currentPH" class="fw-bold">7.20</h2>
+                        <div id="statusText" class="fw-bold text-success">Optimal</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Status Cards -->
+        <div class="col-md-6 offset-md-3 mt-4">
+            <div class="row">
+                <div class="col-sm-6 mb-3">
+                    <div class="card bg-light">
+                        <div class="card-body text-center">
+                            <h6 class="card-title">Current Value</h6>
+                            <h2 class="mb-0" id="currentValue">7.20</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 mb-3">
+                    <div class="card bg-light">
+                        <div class="card-body text-center">
+                            <h6 class="card-title">Last Updated</h6>
+                            <p class="mb-0" id="lastUpdated">Just now</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Chart.js & Bootstrap JS CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const phChart = new Chart(document.getElementById('phChart').getContext('2d'), {
+            type: 'line',
+            data: {
+                labels: [],
+                datasets: [{
+                    label: 'pH Value',
+                    data: [],
+                    borderColor: 'rgb(75, 192, 192)',
+                    tension: 0.1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: false,
+                        min: 0,
+                        max: 14,
+                        ticks: { stepSize: 1 }
+                    }
+                }
+            }
+        });
+
+        function updatePH(value) {
+            document.getElementById('currentValue').textContent = value.toFixed(2);
+            document.getElementById('currentPH').textContent = value.toFixed(2);
+            document.getElementById('lastUpdated').textContent = new Date().toLocaleString();
+
+            const now = new Date().toLocaleTimeString();
+            if (phChart.data.labels.length >= 10) {
+                phChart.data.labels.shift();
+                phChart.data.datasets[0].data.shift();
+            }
+            phChart.data.labels.push(now);
+            phChart.data.datasets[0].data.push(value);
+            phChart.update();
+
+            const status = document.getElementById('statusText');
+            if (value >= 7.5 && value <= 7.9) {
+                status.textContent = 'Optimal';
+                status.className = 'fw-bold text-success';
+            } else if (value >= 8.0) {
+                status.textContent = 'Alkaline';
+                status.className = 'fw-bold text-primary';
+            } else if (value >= 6.5 && value <= 7.4) {
+                status.textContent = 'Neutral';
+                status.className = 'fw-bold text-warning';
+            } else {
+                status.textContent = 'Acidic';
+                status.className = 'fw-bold text-danger';
+            }
+
+            // Update scale pointer
+            const pointer = document.getElementById('ph-pointer');
+            pointer.style.left = `${(value / 14) * 100}%`;
+        }
+
+        // Create pH scale segments and labels
+        const phColors = [
+            '#ff0000', '#ff3300', '#ff6600', '#ff9900', '#ffcc00', '#ffff00', '#ccff00',
+            '#00ff00', '#00cc66', '#009999', '#0066cc', '#0033ff', '#6600cc', '#9900cc'
+        ];
+
+        const scale = document.getElementById('ph-scale');
+        const labels = document.getElementById('ph-labels');
+
+        for (let i = 0; i <= 14; i++) {
+            const seg = document.createElement('div');
+            seg.className = 'flex-grow-1';
+            seg.style.backgroundColor = phColors[i] || '#9900cc';
+            scale.appendChild(seg);
+
+            const label = document.createElement('div');
+            label.className = 'text-center small';
+            label.textContent = i;
+            labels.appendChild(label);
+        }
+
+        // Initial update
+        updatePH(7.2);
+        setInterval(() => updatePH(6.0 + Math.random() * 2), 5000);
+    </script>
+</div>
+{% endblock body %}

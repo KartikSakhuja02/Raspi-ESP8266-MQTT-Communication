@@ -1,0 +1,76 @@
+{% extends "navbar.html" %}
+{% block title %}Humidity{% endblock title %}
+
+{% block body %}
+<div class="container py-5 text-light" style="background-color: #000;">
+    <div class="text-center mb-4">
+        <h1 class="text-primary">Live Humidity</h1>
+        <p class="fs-3">Current Humidity: <span id="humidity" class="text-info">--</span>%</p>
+    </div>
+    <div class="card bg-dark text-light">
+        <div class="card-body">
+            <canvas id="humidityChart" height="100"></canvas>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const ctx = document.getElementById('humidityChart').getContext('2d');
+    const humidityChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: [],
+            datasets: [{
+                label: 'Humidity (%)',
+                borderColor: 'rgba(0, 123, 255, 1)',
+                backgroundColor: 'rgba(0, 123, 255, 0.2)',
+                data: [],
+                fill: true,
+                tension: 0.4
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                x: { title: { display: true, text: 'Time', color: '#fff' }, ticks: { color: '#fff' } },
+                y: { 
+                    title: { display: true, text: '%', color: '#fff' }, 
+                    beginAtZero: true,
+                    ticks: { color: '#fff' }
+                }
+            },
+            plugins: {
+                legend: {
+                    labels: {
+                        color: '#fff'
+                    }
+                }
+            }
+        }
+    });
+
+    function generateHumidity() {
+        return (40 + Math.random() * 30).toFixed(2);
+    }
+
+    function updateHumidity() {
+        const humidity = generateHumidity();
+        const now = new Date().toLocaleTimeString();
+
+        document.getElementById('humidity').textContent = humidity;
+        humidityChart.data.labels.push(now);
+        humidityChart.data.datasets[0].data.push(humidity);
+
+        if (humidityChart.data.labels.length > 10) {
+            humidityChart.data.labels.shift();
+            humidityChart.data.datasets[0].data.shift();
+        }
+
+        humidityChart.update();
+    }
+
+    setInterval(updateHumidity, 2000);
+    updateHumidity();
+</script>
+{% endblock body %}

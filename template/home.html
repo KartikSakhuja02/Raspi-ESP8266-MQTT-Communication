@@ -1,0 +1,93 @@
+{% extends "navbar.html" %}
+{% load static %}
+{% block head %}
+  {% block title %}
+    Home
+  {% endblock title %}
+{% endblock head %}
+{% block body %}
+  <div id="carouselExampleCaptions" class="carousel slide">
+    <div class="carousel-indicators">
+      <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+      <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1" aria-label="Slide 2"></button>
+      <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2" aria-label="Slide 3"></button>
+    </div>
+    <div class="carousel-inner">
+      <div class="carousel-item active">
+        <img src="/static/img/background2.jpg" class="d-block w-100" width="1200" height="450" alt="company name and info">
+        <div class="carousel-caption rounded-pill" style="background-color: rgba(0, 0, 0, 0.25);">
+          <h5>First slide label</h5>
+          <p>Some representative placeholder content for the first slide.</p>
+        </div>
+      </div>
+      <div class="carousel-item">
+        <img src="/static/img/raspberry_pi.png" class="d-block w-100" width="1200" height="450" alt="raspberry_pi image">
+        <div class="carousel-caption rounded-pill" style="background-color: rgba(0, 0, 0, 0.25);">
+          <h5>Raspberry Pi</h5>
+          <p>It is designed to promote computer science education and is widely used for various projects and applications</p>
+        </div>
+      </div>
+      <div class="carousel-item">
+        <img src="/static/img/sensor.png" class="d-block w-100" width="1200" height="450" alt="sensro image">
+        <div class="carousel-caption rounded-pill" style="background-color: rgba(0, 0, 0, 0.25);">
+          <h5>Sensor</h5>
+          <p>a device that receives and responds to a signal or stimulus. The stimulus is the quantity, property, or condition that is sensed and converted into electrical signal</p>
+        </div>
+      </div>
+    </div>    
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Next</span>
+    </button>
+  </div>
+  <div class="row container-fluid align-items-sm-center">
+    <div class="text-center">
+      <h1>SENSOR VALUE</h1>
+    </div>
+    <div class="col-md-3 mb-4">
+      <div class="card h-100">
+        <img src="/static/img/temperature.jpeg" class="card-img-top" alt="..." width="300" height="300">
+        <div class="card-body text-center">
+          <h5 class="card-title">Temperature</h5>
+          <p class="card-text">It can help you know if it's okay to go to work or school.</p>
+          <a href="/temperature" class="btn btn-primary">Go somewhere</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3 mb-4">
+      <div class="card h-100">
+        <img src="/static/img/humidity.png" class="card-img-top" alt="..." width="300" height="300">
+        <div class="card-body text-center">
+          <h5 class="card-title">Humidity</h5>
+          <p class="card-text">Your skin needs a certain level of moisture to stay healthy and supple.</p>
+          <a href="/humidity" class="btn btn-primary">Go somewhere</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3 mb-4">
+      <div class="card h-100">
+        <img src="/static/img/ph_value.jpg" class="card-img-top" alt="..." width="300" height="300">
+        <div class="card-body text-center">
+          <h5 class="card-title">PH Value</h5>
+          <p class="card-text">Check the ph value of water and take any action required</p>
+          <a href="/phsensor" class="btn btn-primary">Go somewhere</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3 mb-4">
+      <div class="card h-100">
+        <img src="/static/img/gas.jpg" class="card-img-top" alt="..." width="300" height="300">
+        <div class="card-body text-center">
+          <h5 class="card-title">Gas Data</h5>
+          <p class="card-text">Check for any gas leckage in the area and take necessary action</p>
+          <a href="/gassensor" class="btn btn-primary">Go somewhere</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+{% endblock body %}
